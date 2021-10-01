@@ -2,7 +2,7 @@ export default class Slide {
   constructor(wrapper, slide) {
     this.wrapper = document.querySelector(wrapper)
     this.slide = document.querySelector(slide)
-    this.dist = { finalPosition: 0, startX: 0, movement:0 }
+    this.dist = { finalPosition: 0, firstPositionX: 0, movement:0 }
   }
 
   moveSlide(distX) {
@@ -11,13 +11,13 @@ export default class Slide {
   }
 
   updatePosition(clientX) {
-    this.dist.movement = (this.dist.startX - clientX) * 1.6;
+    this.dist.movement = (this.dist.firstPositionX - clientX) * 1.6;
     return this.dist.finalPosition - this.dist.movement;
   }
 
   onStart(event) {
     event.preventDefault()
-    this.dist.startX = event.clientX; // ClientX objeto do event
+    this.dist.firstPositionX = event.clientX; // ClientX objeto do event
     this.wrapper.addEventListener('mousemove',this.onMove)
   }
 
@@ -31,18 +31,19 @@ export default class Slide {
     this.dist.finalPosition = this.dist.movePosition;
   }
 
-  addEvents() {
-    this.slide.addEventListener('mousedown', this.onStart);
-    this.slide.addEventListener('mouseup', this.onLeave);
-  }
-
   bindEvents() {
     this.onStart = this.onStart.bind(this);
     this.onMove = this.onMove.bind(this);
     this.onLeave = this.onLeave.bind(this);
   }
 
+  addEvents() {
+    this.slide.addEventListener('mousedown', this.onStart);
+    this.slide.addEventListener('mouseup', this.onLeave);
+  }
+
   init() {
+    console.log(this.dist)
     this.bindEvents()
     this.addEvents();
     return this;
