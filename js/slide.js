@@ -17,7 +17,7 @@ export default class Slide {
 
   onStart(event) {
     event.preventDefault()
-    this.dist.startX = event.clientX;
+    this.dist.startX = event.clientX; // ClientX objeto do event
     this.wrapper.addEventListener('mousemove',this.onMove)
   }
 
