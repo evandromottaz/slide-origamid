@@ -29,31 +29,25 @@ export default class Slide {
     }
   }
 
-  changeSlide(index) {
-    const activeSlide = this.slideArray[index];
-    this.moveSlide(activeSlide.position);
-    this.slidesIndexNav(index);
-    this.dist.finalPosition = activeSlide.position;
-  }
-
   init() {
     this.bindEvents();
     this.addEvents();
     this.slidesConfig();
+    this.changeSlide(0)
     return this;
   }
 
   bindEvents() {
     this.onStart = this.onStart.bind(this);
     this.onMove = this.onMove.bind(this);
-    this.onLeave = this.onLeave.bind(this);
+    this.onEnd = this.onEnd.bind(this);
   }
 
   addEvents() {
     this.slide.addEventListener('mousedown', this.onStart);
     this.slide.addEventListener('touchstart', this.onStart);
-    this.slide.addEventListener('mouseup', this.onLeave);
-    this.slide.addEventListener('touchend', this.onLeave);
+    this.slide.addEventListener('mouseup', this.onEnd);
+    this.slide.addEventListener('touchend', this.onEnd);
   }
 
   onStart(event) {
@@ -69,10 +63,36 @@ export default class Slide {
     this.wrapper.addEventListener(movetype,this.onMove)
   }
 
-  onLeave(event) {
+  onEnd(event) {
     const movetype = (event.type === 'mouseup') ? 'mousemove' : 'touchmove';
     this.wrapper.removeEventListener(movetype,this.onMove);
     this.dist.finalPosition = this.dist.movePosition;
+    this.changeSlideonEnd();
+  }
+
+  changeSlideonEnd() {
+    if (this.dist.movement > 120 && this.index.next !== undefined) {
+      this.nextSlide();
+    } else if (this.dist.movement < -120 && this.index.prev !== undefined) {
+      this.prevSlide()
+    } else {
+      this.changeSlide(this.index.active)
+    }
+  }
+
+  prevSlide() {
+    if (this.index.prev !== undefined) this.changeSlide(this.index.prev)
+  }
+
+  nextSlide() {
+    if (this.index.next !== undefined) this.changeSlide(this.index.next)
+  }
+
+  changeSlide(index) {
+    const activeSlide = this.slideArray[index];
+    this.moveSlide(activeSlide.position);
+    this.slidesIndexNav(index);
+    this.dist.finalPosition = activeSlide.position;
   }
 
   onMove(event) {
