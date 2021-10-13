@@ -7,15 +7,18 @@ img {
     max-width: 100%;
 }
 
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
 .slide-wrapper {
     overflow: hidden;
 }
 
 .slide {
     display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
 }
 
 .slide:hover {
@@ -38,4 +41,25 @@ img {
 .slide li.active {
     opacity: 1;
     transform: scale(1);
+}
+
+[data-control="slide"] {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+[data-control="slide"] li a {
+    display: block;
+    width: 12px;
+    height: 12px;
+    background-color: #fb5;
+    border-radius: 50%;
+    overflow: hidden;
+    text-indent: -999px;
+    margin: 5px;
+}
+
+[data-control="slide"] li.active a, [data-control="slide"] li a:hover {
+    background-color: #e54;
 }
